@@ -97,8 +97,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "READ_CALENDAR";
     if (permission.equals("android.permission.READ_CALL_LOG"))
       return "READ_CALL_LOG";
-    if (permission.equals("android.permission.READ_CONTACTS"))
-      return "READ_CONTACTS";
     if (permission.equals("android.permission.READ_EXTERNAL_STORAGE"))
       return "READ_EXTERNAL_STORAGE";
     if (permission.equals("android.permission.READ_PHONE_NUMBERS"))
@@ -109,8 +107,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "READ_SMS";
     if (permission.equals("android.permission.RECEIVE_MMS"))
       return "RECEIVE_MMS";
-    if (permission.equals("android.permission.RECEIVE_SMS"))
-      return "RECEIVE_SMS";
     if (permission.equals("android.permission.RECEIVE_WAP_PUSH"))
       return "RECEIVE_WAP_PUSH";
     if (permission.equals("android.permission.RECORD_AUDIO"))
@@ -123,8 +119,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "WRITE_CALENDAR";
     if (permission.equals("android.permission.WRITE_CALL_LOG"))
       return "WRITE_CALL_LOG";
-    if (permission.equals("android.permission.WRITE_CONTACTS"))
-      return "WRITE_CONTACTS";
     if (permission.equals("android.permission.WRITE_EXTERNAL_STORAGE"))
       return "WRITE_EXTERNAL_STORAGE";
 
