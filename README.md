@@ -1,14 +1,19 @@
-# ☝🏼 React Native Permissions
+# ☝🏼 react-native-permissions
 
-[![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://badge.fury.io/js/react-native-permissions)
+<a href="https://github.com/sponsors/zoontek">
+  <img align="right" width="160" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+</a>
+
+A unified permissions API for React Native on iOS, Android and Windows.<br>
+(For Windows only builds 18362 and later are supported)
+
+[![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
 [![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
-![Platform - Android, iOS and Windows](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Windows-yellow.svg)
-![MIT](https://img.shields.io/dub/l/vibe-d.svg)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-
-A unified permissions API for React Native on iOS, Android and Windows.
-
-For Windows only builds 18362 and later are supported.
+[![MIT](https://img.shields.io/dub/l/vibe-d.svg)](https://opensource.org/licenses/MIT)
+<br>
+[![Platform - Android](https://img.shields.io/badge/platform-Android-3ddc84.svg?style=flat&logo=android)](https://www.android.com)
+[![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)](https://developer.apple.com/ios)
+[![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?style=flat&logo=windows)](https://www.microsoft.com/en-us/windows)
 
 ## Support
 
@@ -765,7 +770,8 @@ checkNotifications().then(({status, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
-You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.
+You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.  
+You cannot request notifications permissions on Android. `requestNotifications` is the same than `checkNotifications` on this platform.
 
 ```ts
 // only used on iOS
@@ -784,9 +790,7 @@ type NotificationSettings = {
   notificationCenter?: boolean;
 };
 
-function requestNotifications(
-  options: NotificationOption[],
-): Promise<{
+function requestNotifications(options: NotificationOption[]): Promise<{
   status: PermissionStatus;
   settings: NotificationSettings;
 }>;
@@ -918,4 +922,28 @@ import {requestLocationAccuracy} from 'react-native-permissions';
 requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
   .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
   .catch(() => console.warn('Cannot request location accuracy'));
+```
+
+### About iOS LOCATION_ALWAYS permission
+
+If you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there won't be a `Always Allow` button in the system dialog. Only `Allow Once`, `Allow While Using App` and `Don't Allow`. This is expected behaviour, check the [Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736).
+
+When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow While Using App`, a provisional "always" status will be granted. The user will see `While Using` in the settings and later will be informed that your app is using the location in background. That looks like this:
+
+![alt text](https://camo.githubusercontent.com/e8357168f4c8e754adfd940fc065520de838a21a80001839d5e740c18893ec67/68747470733a2f2f636d732e717a2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30392f696f732d31332d6c6f636174696f6e732d7465736c612d31393230783938322e6a70673f7175616c6974793d37352673747269703d616c6c26773d3132303026683d3930302663726f703d31 'Screenshot')
+
+Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
+
+### Testing with Jest
+
+If you don't already have a Jest setup file configured, please add the following to your Jest configuration file and create the new `jest.setup.js` file in project root:
+
+```js
+setupFiles: ['<rootDir>/jest.setup.js'];
+```
+
+You can then add the following line to that setup file to mock the `NativeModule.RNPermissions`:
+
+```js
+jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 ```
